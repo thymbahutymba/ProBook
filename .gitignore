@@ -1,0 +1,10 @@
+# Ignore undo directory
+nvim/undo/** 
+
+# Ignore all plugin without Vundle.vim
+!nvim/bundle/
+nvim/bundle/*
+!nvim/bundle/Vundle.vim
+
+# Ignore link to colors directory inside bundle
+nvim/colors
