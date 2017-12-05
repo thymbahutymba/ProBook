@@ -54,8 +54,8 @@ set linespace=0
 " Leader and Keybind
 
 
-nmap <silent><A-l> :bn<CR>
-nmap <silent><A-h> :bp<CR>
+nmap <silent><S-l> :bn<CR>
+nmap <silent><S-h> :bp<CR>
 
 nmap <silent> <C-k> :wincmd k<CR>
 nmap <silent> <C-j> :wincmd j<CR>
@@ -114,6 +114,10 @@ Plugin 'lilydjwg/colorizer'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'lervag/vimtex'
 Plugin 'jiangmiao/auto-pairs'
+" Plugin 'universal-ctags/ctags'
+
+Plugin 'majutsushi/tagbar'
+map <F9> :TagbarToggle<CR>
 
 Plugin 'vim-airline/vim-airline'
 let g:airline#extensions#tabline#enabled = 1
