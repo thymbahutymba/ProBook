@@ -50,9 +50,9 @@ set statusline+=%h%1*%m%r%w%0* " flag
 set statusline+=%= " right align
 set statusline+=%-14.(%l,%c%V%)\ %<%P " offsetset linespace=0
 set linespace=0
+set modifiable
 
 " Leader and Keybind
-
 
 nmap <silent><S-l> :bn<CR>
 nmap <silent><S-h> :bp<CR>
@@ -68,7 +68,8 @@ nnoremap <Up> :echoe "Use k"<CR>
 nnoremap <Down> :echoe "Use j"<CR>
 
 map <silent> <leader><cr> :noh<cr>
-set pastetoggle=<F2>
+nmap <silent> <leader>hh :split<CR>
+nmap <silent> <leader>vv :vsplit<CR>
 
 colorscheme molokai
 
@@ -82,15 +83,31 @@ filetype off
 
 set rtp+=~/.config/nvim/bundle/Vundle.vim
 call vundle#begin("~/.config/nvim/bundle")
+
 Plugin 'VundleVim/Vundle.vim'
-
 Plugin 'scrooloose/nerdtree'
-map <F10> :NERDTreeToggle<CR>
-" map <F9> :NERDTreeFind<CR>
-set modifiable
 Plugin 'flazz/vim-colorschemes'
-
 Plugin 'scrooloose/syntastic'
+"Plugin 'roxma/nvim-completion-manager'
+"Plugin 'phpactor/phpactor' ,  {'do': 'composer install'}	" PHP
+"Plugin 'roxma/ncm-phpactor'
+"Plugin 'roxma/ncm-clang'		" CPP
+"Plugin 'calebeby/ncm-css'		" CSS
+Plugin 'lilydjwg/colorizer'
+Plugin 'lervag/vimtex'
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'majutsushi/tagbar'
+Plugin 'vim-airline/vim-airline'
+Plugin 'tpope/vim-fugitive'
+Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
+call vundle#end()
+
+" Nerd tree
+map <silent><F10> :NERDTreeToggle<CR>
+" map <F9> :NERDTreeFind<CR>
+
+" Syntastic
 let g:syntastic_quiet_messages = { "level": "warnings" }
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -100,35 +117,41 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
-Plugin 'roxma/nvim-completion-manager'
-set shortmess+=c
-inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" NCM
+" set shortmess+=c
+" inoremap <expr> <CR> pumvisible() ? "\<c-y>\<cr>" : "\<CR>"
+" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-Plugin 'phpactor/phpactor' ,  {'do': 'composer install'}	" PHP
-Plugin 'roxma/ncm-phpactor'
-Plugin 'roxma/ncm-clang'		" CPP
-Plugin 'calebeby/ncm-css'		" CSS
-Plugin 'lilydjwg/colorizer'
-Plugin 'editorconfig/editorconfig-vim'
-Plugin 'lervag/vimtex'
-Plugin 'jiangmiao/auto-pairs'
-" Plugin 'universal-ctags/ctags'
-
-Plugin 'majutsushi/tagbar'
+" Tagbar
 map <F9> :TagbarToggle<CR>
 
-Plugin 'vim-airline/vim-airline'
+" Vim Airline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#branch#enabled = 1			" Fugitive required
+let g:airline_powerline_fonts = 1					" Fugitive required
 
-Plugin 'tpope/vim-fugitive'
-let g:airline#extensions#branch#enabled = 1
-let g:airline_powerline_fonts = 1
+" Deoplete vimtex
+let g:deoplete#enable_at_startup = 1
+if !exists('g:deoplete#omni#input_patterns')
+	let g:deoplete#omni#input_patterns = {}
+endif
+let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete
 
-call vundle#end()
+" augroup my_cm_setup
+"     autocmd!
+"     autocmd User CmSetup call cm#register_source({
+"           \ 'name' : 'vimtex',
+"           \ 'priority': 8,
+"           \ 'scoping': 1,
+"           \ 'scopes': ['tex'],
+"           \ 'abbreviation': 'tex',
+"           \ 'cm_refresh_patterns': g:vimtex#re#ncm,
+"           \ 'cm_refresh': {'omnifunc': 'vimtex#complete#omnifunc'},
+"           \ })
+" augroup END
 
 set shell=/bin/bash
 filetype plugin indent on
