@@ -1,6 +1,7 @@
-"setlocal spell spelllang=en_us
+" setlocal spell spelllang=en_us
 set title
 set titlestring=NVIM:\ %-25.55F\ %a%r%m titlelen=70
+filetype plugin indent on
 
 " Tabs
 set tabstop=4       " Number of spaces that a <Tab> in the file counts for. 
@@ -52,6 +53,8 @@ set statusline+=%-14.(%l,%c%V%)\ %<%P " offsetset linespace=0
 set linespace=0
 set modifiable
 
+set noshowmode
+
 " Leader and Keybind
 
 nmap <silent><S-l> :bn<CR>
@@ -87,7 +90,7 @@ call vundle#begin("~/.config/nvim/bundle")
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'flazz/vim-colorschemes'
-Plugin 'scrooloose/syntastic'
+"Plugin 'scrooloose/syntastic'
 "Plugin 'roxma/nvim-completion-manager'
 "Plugin 'phpactor/phpactor' ,  {'do': 'composer install'}	" PHP
 "Plugin 'roxma/ncm-phpactor'
@@ -97,41 +100,56 @@ Plugin 'lilydjwg/colorizer'
 Plugin 'lervag/vimtex'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'majutsushi/tagbar'
-Plugin 'vim-airline/vim-airline'
+"Plugin 'vim-airline/vim-airline'
 Plugin 'tpope/vim-fugitive'
 Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-
+Plugin 'w0rp/ale'
+Plugin 'itchyny/lightline.vim'
 call vundle#end()
 
 " Nerd tree
 map <silent><F10> :NERDTreeToggle<CR>
 " map <F9> :NERDTreeFind<CR>
 
-" Syntastic
-let g:syntastic_quiet_messages = { "level": "warnings" }
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+" A.L.E
+let g:ale_sign_column_always = 1
+let g:ale_sign_error = '>>'
+let g:ale_sign_warning = '--'
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)	
+
+" Lightline
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'fugitive#head'
+      \ },
+      \ }
 
 " NCM
 " set shortmess+=c
 " inoremap <expr> <CR> pumvisible() ? "\<c-y>\<cr>" : "\<CR>"
-" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " Tagbar
 map <F9> :TagbarToggle<CR>
 
 " Vim Airline
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline#extensions#branch#enabled = 1			" Fugitive required
-let g:airline_powerline_fonts = 1					" Fugitive required
+" let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#tabline#left_sep = ' '
+" let g:airline#extensions#tabline#left_alt_sep = '|'
+" let g:airline#extensions#branch#enabled = 1			" Fugitive required
+" let g:airline_powerline_fonts = 1					" Fugitive required
+" let g:airline#extensions#ale#enabled = 1
 
 " Deoplete vimtex
 let g:deoplete#enable_at_startup = 1
@@ -140,19 +158,5 @@ if !exists('g:deoplete#omni#input_patterns')
 endif
 let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete
 
-" augroup my_cm_setup
-"     autocmd!
-"     autocmd User CmSetup call cm#register_source({
-"           \ 'name' : 'vimtex',
-"           \ 'priority': 8,
-"           \ 'scoping': 1,
-"           \ 'scopes': ['tex'],
-"           \ 'abbreviation': 'tex',
-"           \ 'cm_refresh_patterns': g:vimtex#re#ncm,
-"           \ 'cm_refresh': {'omnifunc': 'vimtex#complete#omnifunc'},
-"           \ })
-" augroup END
-
 set shell=/bin/bash
-filetype plugin indent on
 syntax on
