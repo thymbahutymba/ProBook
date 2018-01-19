@@ -42,14 +42,6 @@ set undoreload=10000
 hi Normal ctermbg=none
 set colorcolumn=81
 set laststatus=2
-" set statusline=\ "
-" set statusline+=%f\ " file name
-" set statusline+=[
-" set statusline+=%{strlen(&ft)?&ft:'none'}, " filetype
-" set statusline+=%{&fileformat}] " file format
-" set statusline+=%h%1*%m%r%w%0* " flag
-" set statusline+=%= " right align
-" set statusline+=%-14.(%l,%c%V%)\ %<%P " offsetset linespace=0
 set linespace=0
 set modifiable
 
@@ -90,21 +82,18 @@ call vundle#begin("~/.config/nvim/bundle")
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'flazz/vim-colorschemes'
-"Plugin 'scrooloose/syntastic'
-"Plugin 'roxma/nvim-completion-manager'
-"Plugin 'phpactor/phpactor' ,  {'do': 'composer install'}	" PHP
-"Plugin 'roxma/ncm-phpactor'
-"Plugin 'roxma/ncm-clang'		" CPP
-"Plugin 'calebeby/ncm-css'		" CSS
 Plugin 'lilydjwg/colorizer'
 Plugin 'lervag/vimtex'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'majutsushi/tagbar'
-"Plugin 'vim-airline/vim-airline'
-Plugin 'tpope/vim-fugitive'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
 Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plugin 'w0rp/ale'
-Plugin 'itchyny/lightline.vim'
+Plugin 'vim-airline/vim-airline'
+Plugin 'tpope/vim-fugitive'
+" Plugin 'itchyny/lightline.vim'
+" Plugin 'ap/vim-buftabline'
 call vundle#end()
 
 " Nerd tree
@@ -140,16 +129,23 @@ let g:lightline = {
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
+" Ultisnips Snippets
+let g:UltiSnipsExpandTrigger="<c-k>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsEditSplit="vertical"
+
 " Tagbar
-map <F9> :TagbarToggle<CR>
+map <silent><F9> :TagbarToggle<CR>
 
 " Vim Airline
-" let g:airline#extensions#tabline#enabled = 1
-" let g:airline#extensions#tabline#left_sep = ' '
-" let g:airline#extensions#tabline#left_alt_sep = '|'
-" let g:airline#extensions#branch#enabled = 1			" Fugitive required
-" let g:airline_powerline_fonts = 1					" Fugitive required
-" let g:airline#extensions#ale#enabled = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#branch#enabled = 1			" Fugitive required
+let g:airline_powerline_fonts = 1					" Fugitive required
+let g:airline#extensions#ale#enabled = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail'	" default, unique_tail, unique_tail_improved 
 
 " Deoplete vimtex
 let g:deoplete#enable_at_startup = 1
