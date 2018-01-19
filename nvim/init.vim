@@ -85,13 +85,15 @@ Plugin 'flazz/vim-colorschemes'
 Plugin 'lilydjwg/colorizer'
 Plugin 'lervag/vimtex'
 Plugin 'jiangmiao/auto-pairs'
-Plugin 'majutsushi/tagbar'
+" Plugin 'majutsushi/tagbar'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plugin 'w0rp/ale'
 Plugin 'vim-airline/vim-airline'
 Plugin 'tpope/vim-fugitive'
+" Plugin 'junegunn/goyo.vim'
+" Plugin 'ludovicchabant/vim-gutentags'
 " Plugin 'itchyny/lightline.vim'
 " Plugin 'ap/vim-buftabline'
 call vundle#end()
@@ -153,6 +155,13 @@ if !exists('g:deoplete#omni#input_patterns')
 	let g:deoplete#omni#input_patterns = {}
 endif
 let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete
+
+" vim-gutentag
+" Enable
+" let g:gutentag_enabled = 1
+" Set cache dir
+" let g:gutentags_cache_dir = '~/.cache/tags'
+
 
 set shell=/bin/bash
 syntax on
