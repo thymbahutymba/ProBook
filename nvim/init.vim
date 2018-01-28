@@ -2,15 +2,21 @@
 set title
 set titlestring=NVIM:\ %-25.55F\ %a%r%m titlelen=70
 filetype plugin indent on
+set nocompatible
+filetype on
+set modeline
 
 " Tabs
+set smarttab
 set tabstop=4       " Number of spaces that a <Tab> in the file counts for. 
 set shiftwidth=4    " Number of spaces to use for each step of (auto)indent.
 set autoindent
 set si
+set preserveindent
+set copyindent
 set noexpandtab
 set softtabstop=0
-set preserveindent
+set textwidth=120
 set wrap
 
 set showcmd         " Show (partial) command in status line.
@@ -73,9 +79,6 @@ if has('mouse')
     set mouse=a
 endif
 
-set nocompatible
-filetype off
-
 set rtp+=~/.config/nvim/bundle/Vundle.vim
 call vundle#begin("~/.config/nvim/bundle")
 
@@ -111,7 +114,7 @@ let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-nmap <silent> <C-j> <Plug>(ale_next_wrap)	
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 " Lightline
 let g:lightline = {
@@ -162,6 +165,18 @@ let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete
 " Set cache dir
 " let g:gutentags_cache_dir = '~/.cache/tags'
 
+" Append modeline after last line in buffer.
+function! AppendModeline()
+	let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d %set :",
+		\ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
+	let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
+	call append(line("$"), l:modeline)
+endfunction
+nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
+
+let g:python_recommended_style = 0
 
 set shell=/bin/bash
 syntax on
+
+" vim: set ts=4 sw=4 tw=80 noet :
