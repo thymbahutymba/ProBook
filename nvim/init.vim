@@ -16,7 +16,7 @@ set preserveindent
 set copyindent
 set noexpandtab
 set softtabstop=0
-set textwidth=120
+set textwidth=80
 set wrap
 
 set showcmd         " Show (partial) command in status line.
@@ -30,14 +30,7 @@ set cursorline
 set noswapfile
 set history=500
 
-" set linebreak
-" set wrap
-" set nolist
-" set list listchars=tab:»\ ,nbsp:_,trail:·
 set list listchars=tab:▸\ ,eol:¬
-" set list
-" set showmode
-" set nowrap
 
 " Persistent undo
 set undodir=~/.config/nvim/undo
@@ -53,13 +46,16 @@ set modifiable
 
 set noshowmode
 
+" cmap w!!<CR> :w !sudo tee % >/dev/null<CR>
+cnoremap w!! w !sudo tee > /dev/null % 
+
 " Leader and Keybind
 
 nmap <silent><S-l> :bn<CR>
 nmap <silent><S-h> :bp<CR>
 
-nmap <silent> <C-k> :wincmd k<CR>
-nmap <silent> <C-j> :wincmd j<CR>
+" nmap <silent> <C-k> :wincmd k<CR>
+" nmap <silent> <C-j> :wincmd j<CR>
 nmap <silent> <C-h> :wincmd h<CR>
 nmap <silent> <C-l> :wincmd l<CR>
 
@@ -79,27 +75,28 @@ if has('mouse')
     set mouse=a
 endif
 
-set rtp+=~/.config/nvim/bundle/Vundle.vim
-call vundle#begin("~/.config/nvim/bundle")
+set rtp+=	" ~/.config/nvim/bundle/Vundle.vim
+" call vundle#begin("~/.config/nvim/bundle")
+call plug#begin()
 
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'flazz/vim-colorschemes'
-Plugin 'lilydjwg/colorizer'
-Plugin 'lervag/vimtex'
-Plugin 'jiangmiao/auto-pairs'
-" Plugin 'majutsushi/tagbar'
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
-Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plugin 'w0rp/ale'
-Plugin 'vim-airline/vim-airline'
-Plugin 'tpope/vim-fugitive'
-" Plugin 'junegunn/goyo.vim'
-" Plugin 'ludovicchabant/vim-gutentags'
-" Plugin 'itchyny/lightline.vim'
-" Plugin 'ap/vim-buftabline'
-call vundle#end()
+Plug 'VundleVim/Vundle.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'flazz/vim-colorschemes'
+Plug 'lilydjwg/colorizer'
+Plug 'lervag/vimtex'
+Plug 'jiangmiao/auto-pairs'
+
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'zchee/deoplete-jedi'
+Plug 'w0rp/ale'
+Plug 'vim-airline/vim-airline'
+Plug 'tpope/vim-fugitive'
+
+call plug#end()
+" call vundle#end()
 
 " Nerd tree
 map <silent><F10> :NERDTreeToggle<CR>
@@ -128,16 +125,13 @@ let g:lightline = {
       \ },
       \ }
 
-" NCM
-" set shortmess+=c
-" inoremap <expr> <CR> pumvisible() ? "\<c-y>\<cr>" : "\<CR>"
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " Ultisnips Snippets
-let g:UltiSnipsExpandTrigger="<c-k>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsExpandTrigger="<c-j>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 let g:UltiSnipsEditSplit="vertical"
 
 " Tagbar
@@ -159,12 +153,6 @@ if !exists('g:deoplete#omni#input_patterns')
 endif
 let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete
 
-" vim-gutentag
-" Enable
-" let g:gutentag_enabled = 1
-" Set cache dir
-" let g:gutentags_cache_dir = '~/.cache/tags'
-
 " Append modeline after last line in buffer.
 function! AppendModeline()
 	let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d %set :",
@@ -172,7 +160,7 @@ function! AppendModeline()
 	let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
 	call append(line("$"), l:modeline)
 endfunction
-nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
+nnoremap <silent><Leader>ml :call AppendModeline()<CR>
 
 let g:python_recommended_style = 0
 

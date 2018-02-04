@@ -6,5 +6,8 @@ nvim/undo/**
 nvim/bundle/*
 !nvim/bundle/Vundle.vim
 
+nvim/plugged/
+nvim/plugged/*
+
 # Ignore link to colors directory inside bundle
 nvim/colors
