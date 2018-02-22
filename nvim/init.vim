@@ -1,4 +1,4 @@
-" setlocal spell spelllang=en_us
+let mapleader=","
 set title
 set titlestring=NVIM:\ %-25.55F\ %a%r%m titlelen=70
 filetype plugin indent on
@@ -18,6 +18,9 @@ set noexpandtab
 set softtabstop=0
 set textwidth=80
 set wrap
+set splitright		" Vertical split to right
+" set splitbelow
+" set completeopt-=preview
 
 set showcmd         " Show (partial) command in status line.
 set number          " Show line numbers.
@@ -30,7 +33,11 @@ set cursorline
 set noswapfile
 set history=500
 
-set list listchars=tab:▸\ ,eol:¬
+" list possible simbol ↲┆▸·
+set list listchars=tab:▸\ ,eol:¬,trail:·
+" set listchars=tab:│\ ,eol:¬,nbsp:␣,trail:·
+
+set list
 
 " Persistent undo
 set undodir=~/.config/nvim/undo
@@ -72,10 +79,13 @@ colorscheme molokai
 
 set t_Co=256
 if has('mouse')
-    set mouse=a
+	set mouse=a
+endif
+if !&scrolloff
+	set scrolloff=7
 endif
 
-set rtp+=	" ~/.config/nvim/bundle/Vundle.vim
+set rtp+= " ~/.config/nvim/bundle/Vundle.vim
 " call vundle#begin("~/.config/nvim/bundle")
 call plug#begin()
 
@@ -90,7 +100,7 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" Plug 'zchee/deoplete-jedi'
+Plug 'zchee/deoplete-jedi'
 Plug 'w0rp/ale'
 Plug 'vim-airline/vim-airline'
 Plug 'tpope/vim-fugitive'
@@ -127,6 +137,7 @@ let g:lightline = {
 
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "<CR>"
 
 " Ultisnips Snippets
 let g:UltiSnipsExpandTrigger="<c-j>"
@@ -146,16 +157,19 @@ let g:airline_powerline_fonts = 1					" Fugitive required
 let g:airline#extensions#ale#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'	" default, unique_tail, unique_tail_improved 
 
-" Deoplete vimtex
+" Deoplete
 let g:deoplete#enable_at_startup = 1
 if !exists('g:deoplete#omni#input_patterns')
 	let g:deoplete#omni#input_patterns = {}
 endif
-let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete
+
+let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete	" vimtex
+let g:deoplete#sources#jedi#show_docstring = 1					" deoplete
+autocmd CompleteDone * pclose!		" Close preview window after completition
 
 " Append modeline after last line in buffer.
 function! AppendModeline()
-	let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d %set :",
+	let l:modeline = printf("vim: set ts=%d sw=%d tw=%d %set :",
 		\ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
 	let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
 	call append(line("$"), l:modeline)
