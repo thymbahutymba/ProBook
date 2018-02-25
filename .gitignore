@@ -11,3 +11,4 @@ nvim/plugged/*
 
 # Ignore link to colors directory inside bundle
 nvim/colors
+nvim/autoload
