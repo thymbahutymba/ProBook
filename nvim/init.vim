@@ -23,6 +23,7 @@ set wrap			" Warp lines
 set splitright		" Vertical split to right
 set splitbelow
 
+" set completeopt=menuone,preview,noinsert
 set completeopt=menuone,preview,noinsert
 
 set showcmd		 " Show (partial) command in status line.
@@ -84,7 +85,6 @@ if !&scrolloff
 	set scrolloff=7
 endif
 
-set rtp+=
 call plug#begin()
 
 Plug 'scrooloose/nerdtree'
@@ -97,6 +97,10 @@ Plug 'honza/vim-snippets'
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-jedi'
+Plug 'sebastianmarkow/deoplete-rust'
+
+Plug 'Shougo/neco-vim'
+Plug 'rust-lang/rust.vim'
 
 Plug 'w0rp/ale'
 Plug 'vim-airline/vim-airline'
@@ -104,10 +108,16 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tyrannicaltoucan/vim-quantum'
 
+Plug 'szw/vim-tags'
+Plug 'majutsushi/tagbar'
+
+Plug 'mhinz/vim-startify'
+
 call plug#end()
 
 " Nerd tree
 map <silent><F10> :NERDTreeToggle<CR>
+let g:NERDTreeQuitOnOpen = 1
 " map <F9> :NERDTreeFind<CR>
 
 " A.L.E
@@ -155,6 +165,7 @@ let g:airline_powerline_fonts = 1					" Fugitive required
 let g:airline#extensions#ale#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'	" default, unique_tail, unique_tail_improved 
 let g:airline_theme='quantum'
+let g:airline_section_warning=''
 
 " Deoplete
 let g:deoplete#enable_at_startup = 1
@@ -164,6 +175,8 @@ endif
 
 let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete	" vimtex
 let g:deoplete#sources#jedi#show_docstring = 1					" deoplete
+let g:deoplete#sources#rust#racer_binary = '/usr/bin/racer'
+let g:deoplete#sources#rust#rust_source_path = '/usr/lib/rustlib/src/rust/src'
 autocmd CompleteDone * pclose!		" Close preview window after completition
 
 " Append modeline after last line in buffer.
@@ -179,7 +192,12 @@ let g:python_recommended_style = 0
 
 " Vim quantum
 let g:quantum_black=1
-" let g:quantum_italics=1
+
+" CtrlP
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+
+nnoremap <silent> <F9> :TagbarToggle<CR>
 
 set shell=/bin/bash
 syntax on
